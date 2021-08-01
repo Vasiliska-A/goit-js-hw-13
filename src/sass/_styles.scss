@@ -3,6 +3,13 @@ body {
     'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
 }
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .input {
   padding: 5px;
   border: 1px solid darkblue;
@@ -28,8 +35,13 @@ body {
 }
 
 .load-more {
+  display: none;
+}
+
+.shown {
   display: flex;
   margin-top: 10px;
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
 
@@ -41,4 +53,21 @@ body {
   font-size: 14px;
   text-align: center;
   color: black;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo-card {
+  margin-bottom: 20px;
+  width: 600px;
+}
+
+.info {
+  margin-left: 10px;
+  margin-right: 15px;
 }
