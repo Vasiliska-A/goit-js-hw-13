@@ -22,7 +22,7 @@ function onSearchBtnClick(event) {
   event.preventDefault();
   console.log('12313');
   query = refs.input.value;
-  //   refs.galleryWrapper.innerHTML = '';
+  refs.galleryWrapper.innerHTML = '';
 
   if (query !== '') {
     return fetchImages(query)
