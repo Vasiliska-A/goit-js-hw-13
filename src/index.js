@@ -4,36 +4,41 @@ import imageCardTmpl from './templates/imagecard.hbs';
 import { Notify } from 'notiflix';
 import './sass/main.scss';
 
-refs.searchButton.addEventListener('click', renderImages);
+// refs.searchForm.addEventListener('submit', fetchImages);
+refs.searchButton.addEventListener('click', onSearchBtnClick);
 
+let query = '';
 let pageNumber = 1;
 
-async function renderImages(event) {
-  event.preventDefault();
-  const query = refs.input.value;
+async function getGalleryMarkUp() {
+  query = refs.input.value;
   const pictures = await fetchImages(query, pageNumber);
-  getGalleryMarkUp();
+  //   console.log(pictures.hits);
+  const galleryMarkUp = pictures.hits.map(imageCardTmpl).join('');
+  refs.galleryWrapper.insertAdjacentHTML('afterbegin', galleryMarkUp);
 }
 
-// function onSearchBtnClick(event) {
-//
+function onSearchBtnClick(event) {
+  event.preventDefault();
+  console.log('12313');
+  query = refs.input.value;
+  //   refs.galleryWrapper.innerHTML = '';
 
-//    const pictures = await fetchImages(query);
-//   if (query.trim('') === '') {
-//     return;
-//   }
-
-//   return fetchImages(query).then(pictures => {
-//     // if (pictures.hits.length === 0) {
-//     //   Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-//     // } else {
-//     getGalleryMarkUp();
-
-//     // refs.galleryWrapper.innerHTML = '';
-//   });
-// }
-
-function getGalleryMarkUp(pictures) {
-  const galleryMarkUp = pictures.map(imageCardTmpl).join('');
-  refs.galleryWrapper.insertAdjacentHTML('afterbegin', galleryMarkUp);
+  if (query !== '') {
+    return fetchImages(query)
+      .then(pictures => {
+        if (pictures.hits.length === 0) {
+          console.log(pictures.hits);
+          Notify.failure(
+            'Sorry, there are no images matching your search query. Please try again.',
+          );
+        } else {
+          getGalleryMarkUp();
+          const totalHits = pictures.totalHits;
+          console.log(totalHits);
+          Notify.info(`Hooray! We found ${totalHits} images.`);
+        }
+      })
+      .catch(Error);
+  }
 }
