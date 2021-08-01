@@ -7,7 +7,7 @@ import { Notify } from 'notiflix';
 import './sass/main.scss';
 
 refs.searchButton.addEventListener('click', onSearchBtnClick);
-refs.loadMMoreBtn.addEventListener('click', onLoadMore);
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
 let query = '';
 let pageNumber = '';
@@ -16,19 +16,20 @@ function onSearchBtnClick(event) {
   event.preventDefault();
   query = refs.input.value;
   pageNumber = 1;
-  refs.loadMMoreBtn.classList.add('shown');
+  // console.log(pageNumber);
   refs.galleryWrapper.innerHTML = '';
 
   if (query !== '') {
     return fetchImages(query, pageNumber)
       .then(pictures => {
         if (pictures.hits.length === 0) {
-          console.log(pictures.hits);
+          refs.loadMoreBtn.classList.remove('shown');
           Notify.failure(
             'Sorry, there are no images matching your search query. Please try again.',
           );
         } else {
           getGalleryMarkUp();
+          refs.loadMoreBtn.classList.add('shown');
           const totalHits = pictures.totalHits;
           //   console.log(totalHits);
           Notify.info(`Hooray! We found ${totalHits} images.`);
@@ -46,18 +47,24 @@ async function getGalleryMarkUp() {
   refs.galleryWrapper.insertAdjacentHTML('beforeend', galleryMarkUp);
 }
 
-function onLoadMore(event) {
-  // event.preventDefault();
-  refs.loadMMoreBtn.classList.remove('shown');
+function onLoadMore() {
   pageNumber += 1;
+  // console.log(pageNumber);
 
   fetchImages(query)
     .then(pictures => {
+      // console.log(pictures);
+      // const totalHitsAmount = pictures.totalHits;
+      // console.log(totalHitsAmount);
+      // console.log(pictures.hits.length);
+      // console.log(pictures);
+      // console.log(pageNumber);
       if (pictures.hits.length === 0) {
-        console.log(pictures.hits);
-        Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+        console.log(pictures.hits.length);
+        Notify.info("We're sorry, but you've reached the end of search results.");
+        refs.loadMoreBtn.classList.remove('shown');
       } else {
-        getGalleryMarkUp();
+        getGalleryMarkUp(pictures);
       }
     })
     .catch(Error);
