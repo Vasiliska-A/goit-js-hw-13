@@ -52,11 +52,11 @@ function onLoadMore() {
   // console.log(pageNumber);
   fetchImages(query, pageNumber)
     .then(pictures => {
-      const totalHitsAmount = pictures.totalHits;
-      console.log(totalHitsAmount);
-      console.log(pictures.hits.length);
-      console.log(pictures);
-      console.log(pageNumber);
+      // const totalHitsAmount = pictures.totalHits;
+      // console.log(totalHitsAmount);
+      // console.log(pictures.hits.length);
+      // console.log(pictures);
+      // console.log(pageNumber);
       if (pictures.hits.length === 0) {
         console.log(pictures.hits.length);
         Notify.info("We're sorry, but you've reached the end of search results.");
