@@ -4,6 +4,8 @@ import { refs } from './js/refs';
 import { fetchImages } from './js/fetchimages';
 import imageCardTmpl from './templates/imagecard.hbs';
 import { Notify } from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import './sass/main.scss';
 
 refs.searchButton.addEventListener('click', onSearchBtnClick);
@@ -11,6 +13,9 @@ refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
 let query = '';
 let pageNumber = '';
+
+var lightbox = new SimpleLightbox('.big-photo-href');
+console.log(lightbox);
 
 function onSearchBtnClick(event) {
   event.preventDefault();
@@ -30,6 +35,7 @@ function onSearchBtnClick(event) {
         } else {
           getGalleryMarkUp();
           refs.loadMoreBtn.classList.add('shown');
+
           const totalHits = pictures.totalHits;
           //   console.log(totalHits);
           Notify.info(`Hooray! We found ${totalHits} images.`);
@@ -45,6 +51,7 @@ async function getGalleryMarkUp() {
   //   console.log(pictures.hits);
   const galleryMarkUp = pictures.hits.map(imageCardTmpl).join('');
   refs.galleryWrapper.insertAdjacentHTML('beforeend', galleryMarkUp);
+  lightbox.refresh();
 }
 
 function onLoadMore() {
